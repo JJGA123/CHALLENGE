@@ -1,0 +1,2 @@
+INSERT INTO USER (ID_USER,NAMEUSER,EMAIL,PASSWORD,ROLE) VALUES (1,'user','jhongalvis2@gmail.com','user','user');
+INSERT INTO USER (ID_USER,NAMEUSER,EMAIL,PASSWORD,ROLE) VALUES (2,'admin','sistemasjhoning@gmail.com','admin','admin');

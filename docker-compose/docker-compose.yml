@@ -1,0 +1,54 @@
+version: '3.7'
+services:
+  eureka-service:
+    container_name: eureka-service
+    image: eureka-service:v1
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - springcloud
+  gateway-service:
+    container_name: gateway-service
+    image: gateway-service:v1
+    ports:
+      - "8080:8080"
+    restart: always
+    networks:
+      - springcloud
+    depends_on: 
+      - eureka-service
+  auth-service:
+    container_name: auth-service
+    image: auth-service:v1
+    restart: always
+    networks:
+      - springcloud
+    depends_on: 
+      - eureka-service
+  user-service:
+    container_name: user-service
+    image: user-service:v1
+    restart: always
+    networks:
+      - springcloud
+    depends_on: 
+      - eureka-service
+  account-service:
+    container_name: account-service
+    image: account-service:v1
+    restart: always
+    networks:
+      - springcloud
+    depends_on: 
+      - eureka-service
+  transaction-service:
+    container_name: transaction-service
+    image: transaction-service:v1
+    restart: always
+    networks:
+      - springcloud
+    depends_on: 
+      - eureka-service
+networks:
+  springcloud:

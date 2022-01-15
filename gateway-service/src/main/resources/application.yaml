@@ -1,0 +1,30 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: user-service
+        uri:
+          lb://user-service
+        predicates:
+          - Path=/user/**
+        filters:
+          - AuthFilter
+      - id: account-service
+        uri:
+          lb://account-service
+        predicates:
+        - Path=/account/**
+      - id: transaction-service
+        uri:
+          lb://transaction-service
+        predicates:
+        - Path=/transaction/**
+      - id: auth-service
+        uri:
+          lb://auth-service
+        predicates:
+        - Path=/auth/**
+                
