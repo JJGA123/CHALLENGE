@@ -8,11 +8,10 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
 	@Bean
-	  public GroupedOpenApi publicApi() {
+	public GroupedOpenApi publicApi() {
 	      return GroupedOpenApi.builder()
 	              .group("springshop-public")
 	              .pathsToMatch("/public/**")
 	              .build();
-	  }
-
+	 }  
 }

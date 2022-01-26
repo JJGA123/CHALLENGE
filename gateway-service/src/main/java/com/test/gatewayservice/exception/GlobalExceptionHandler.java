@@ -5,9 +5,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.test.gatewayservice.constants.Constants.ErrorsTypes;
+import com.test.gatewayservice.constants.ConstantType.ErrorsTypes;
 import com.test.gatewayservice.dto.ResponseDto;
-import com.test.gatewayservice.errors.UnauthorizedException;
 
 @ControllerAdvice
 @ResponseBody

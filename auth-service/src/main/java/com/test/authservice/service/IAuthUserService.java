@@ -1,10 +1,9 @@
 package com.test.authservice.service;
 
-import com.test.authservice.dto.AuthUserDto;
+import com.test.authservice.dto.UserDto;
 import com.test.authservice.dto.NewUserDto;
 import com.test.authservice.dto.RequestDto;
 import com.test.authservice.dto.TokenDto;
-import com.test.authservice.entity.AuthUser;
 
 public interface IAuthUserService {
 
@@ -13,14 +12,14 @@ public interface IAuthUserService {
 	 * @param dto object that contains the information of new user
 	 * @return New user information
 	 */
-    public AuthUser save(NewUserDto dto);
+    public NewUserDto save(NewUserDto dto);
 
     /**
 	 * Specification login: login the authorization system
 	 * @param dto object that contains the information of user by login
 	 * @return Information token
 	 */
-    public TokenDto login(AuthUserDto dto);
+    public TokenDto login(UserDto dto);
 
     /**
 	 * Specification validate: validate the information on token

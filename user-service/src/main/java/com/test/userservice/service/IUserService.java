@@ -6,7 +6,7 @@ import java.util.Map;
 import com.test.userservice.dto.AccountDto;
 import com.test.userservice.dto.ResponseDto;
 import com.test.userservice.dto.TransactionDto;
-import com.test.userservice.entity.UserEntity;
+import com.test.userservice.dto.UserDto;
 
 public interface IUserService {
 
@@ -14,42 +14,49 @@ public interface IUserService {
 	 * Specification getAll: get the users
 	 * @return User information list
 	 */
-	public List<UserEntity> getAll();
+	public List<UserDto> getAll();
 	
 	/**
 	 * Specification getUserById: get the user with filter by id
 	 * @param id identifier user for get
 	 * @return User information
 	 */
-	public UserEntity getUserById(int id);
+	public UserDto getUserById(int id);
 	
 	/**
 	 * Specification getUserByEmail: get the user with filter by email
 	 * @param email email user for get
 	 * @return User information
 	 */
-	public UserEntity getUserByEmail(String email);
+	public UserDto getUserByEmail(String email);
 	
 	/**
 	 * Specification save: save the new user
 	 * @param user object that contains the information of new user
 	 * @return New user information
 	 */
-	public UserEntity save(UserEntity user);
+	public UserDto save(UserDto user);
+	
+	/**
+	 * Implementation edit: save the new user information
+	 * @param user object that contains the new user information
+	 * @return New user information
+	 */
+	public UserDto edit(UserDto user);
 	
 	/**
 	 * Specification getAccounts: get the accounts with filter by userId
 	 * @param userId identifier user by filter
-	 * @return The response object with information details
+	 * @return Accounts information list
 	 */
-	public ResponseDto getAccounts(int userId);
+	public List<AccountDto> getAccounts(int userId);
 	
 	/**
 	 * Specification getTransactions: get the transactions with filter by userId
 	 * @param userId identifier user by filter
-	 * @return The response object with information details
+	 * @return Transaction information list
 	 */
-	public ResponseDto getTransactions(int userId);
+	public List<TransactionDto> getTransactions(int userId);
 	
 	/**
 	 * Specification saveAccount: save the new account
@@ -60,12 +67,11 @@ public interface IUserService {
 	public ResponseDto saveAccount(int userId, AccountDto account);
 	
 	/**
-	 * Specification saveTransaction: save the new transaction
-	 * @param userId identifier user by associate transaction
+	 * Specification sendTransaction: send the new transaction
 	 * @param transaction object that contains the information of new transaction
 	 * @return The response object with information details
 	 */
-	public ResponseDto saveTransaction(int userId, TransactionDto transaction);
+	public ResponseDto sendTransaction(TransactionDto transaction);
 	
 	/**
 	 * Specification getUserAll: get all information with filter userId

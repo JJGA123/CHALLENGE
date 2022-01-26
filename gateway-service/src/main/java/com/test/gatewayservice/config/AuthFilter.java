@@ -11,7 +11,7 @@ import org.springframework.web.server.ServerWebExchange;
 
 import com.test.gatewayservice.dto.RequestDto;
 import com.test.gatewayservice.dto.TokenDTO;
-import com.test.gatewayservice.errors.UnauthorizedException;
+import com.test.gatewayservice.exception.UnauthorizedException;
 
 import reactor.core.publisher.Mono;
 
@@ -38,7 +38,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 		    }
 		    return webClient.build()
 		    		.post()
-		    		.uri("http://auth-service/auth/validate?token="+chunks[1])
+		    		.uri("http://auth-service/api/v1/auths/validate?token="+chunks[1])
 		    		.bodyValue(new RequestDto(exchange.getRequest().getPath().toString(),exchange.getRequest().getMethod().toString()))
 		    		.retrieve().bodyToMono(TokenDTO.class)
 		    		.map(t -> {

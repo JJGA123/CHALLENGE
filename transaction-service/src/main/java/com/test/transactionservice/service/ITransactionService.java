@@ -2,7 +2,7 @@ package com.test.transactionservice.service;
 
 import java.util.List;
 
-import com.test.transactionservice.entity.TransactionEntity;
+import com.test.transactionservice.dto.TransactionDto;
 
 public interface ITransactionService {
 	
@@ -10,20 +10,20 @@ public interface ITransactionService {
 	 * Specification getAll: get the transactions
 	 * @return Transactions information list
 	 */
-	public List<TransactionEntity> getAll();
+	public List<TransactionDto> getAll();
+	
+	/**
+	 * Specification getTransactionByNumberOrigin: get the transactions by number origin
+	 * @param numberOrigin text string with number origin
+	 * @return Transactions information list
+	 */
+	public List<TransactionDto> getTransactionByNumberOrigin(String numberOrigin);
 	
 	/**
 	 * Specification save: save the new transaction
-	 * @param transaction object that contains the information of new account
+	 * @param transaction object that contains the information of new transaction
 	 * @return New account information
 	 */
-	public TransactionEntity save(TransactionEntity transaction);
-	
-	/**
-	 * Specification getTransactionByUserId: get the transactions with filter userId
-	 * @param userId identifier user by filter
-	 * @return Transactions information list by userId
-	 */
-	public List<TransactionEntity> getTransactionByUserId(int userId);
+	public TransactionDto save(TransactionDto transaction);
 	
 }

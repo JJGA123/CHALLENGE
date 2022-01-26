@@ -45,9 +45,5 @@ public class TransactionEntity {
     @NotNull
     @Column(name = "DESCRIPTION")
 	private String description;
-    
-    @NotNull
-    @Column(name = "ID_USER")
-	private int userId;
 	
 }

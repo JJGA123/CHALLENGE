@@ -1,7 +1,7 @@
 package com.test.authservice.security;
 
 import com.test.authservice.dto.RequestDto;
-import com.test.authservice.entity.AuthUser;
+import com.test.authservice.entity.UserEntity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -38,7 +38,7 @@ public class JwtProvider {
 	 * @param authUser Object that contains the information to create token
 	 * @return The new token
 	 */
-    public String createToken(AuthUser authUser) {
+    public String createToken(UserEntity authUser) {
         Map<String, Object> claims = new HashMap<>();
         claims = Jwts.claims().setSubject(authUser.getNameUser());
         claims.put("id", authUser.getIdUser());

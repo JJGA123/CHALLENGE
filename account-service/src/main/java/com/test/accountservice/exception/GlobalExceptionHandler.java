@@ -5,11 +5,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.test.accountservice.constants.Constants.ErrorsTypes;
+import com.test.accountservice.constants.ConstantType.ErrorsTypes;
 import com.test.accountservice.dto.ResponseDto;
-import com.test.accountservice.errors.AmountInvalidException;
-import com.test.accountservice.errors.ExistException;
-import com.test.accountservice.errors.NotExistException;
 
 @ControllerAdvice
 @ResponseBody
@@ -22,7 +19,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(ExistException.class)
 	public ResponseDto exist(ExistException ex) {
-		ResponseDto response = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),ErrorsTypes.INFORMATION_EXIST.getErrorsType(),ex.getMessage());
+		ResponseDto response = new ResponseDto(HttpStatus.OK.getReasonPhrase(),ErrorsTypes.INFORMATION_EXIST.getErrorsType(),ex.getMessage());
 		return response;
 	}
 	
@@ -33,7 +30,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(NotExistException.class)
 	public ResponseDto notExist(NotExistException ex) {
-		ResponseDto response = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),ErrorsTypes.INFORMATION_NOT_EXIST.getErrorsType(),ex.getMessage());
+		ResponseDto response = new ResponseDto(HttpStatus.OK.getReasonPhrase(),ErrorsTypes.INFORMATION_NOT_EXIST.getErrorsType(),ex.getMessage());
 		return response;
 	}
 	
@@ -44,7 +41,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(AmountInvalidException.class)
 	public ResponseDto amountInvalid(AmountInvalidException ex) {
-		ResponseDto response = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),ErrorsTypes.AMOUNT_INVALID.getErrorsType(),ex.getMessage());
+		ResponseDto response = new ResponseDto(HttpStatus.OK.getReasonPhrase(),ErrorsTypes.AMOUNT_INVALID.getErrorsType(),ex.getMessage());
 		return response;
 	}
 	

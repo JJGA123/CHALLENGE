@@ -1,5 +1,7 @@
 package com.test.userservice.feignclient;
 
+import java.util.List;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +19,7 @@ public interface IAccountFeignClient {
 	 * @param account object that contains the account information
 	 * @return The response object with information details
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "account/save")
+	@RequestMapping(method = RequestMethod.POST, value = "api/v1/accounts")
 	ResponseDto save(@RequestBody AccountDto account);
 	
 	/**
@@ -25,22 +27,23 @@ public interface IAccountFeignClient {
 	 * @param numberAccount text string with the number account
 	 * @return The response object with information details
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "account/getByNumberAccount/{numberAccount}")
+	@RequestMapping(method = RequestMethod.GET, value = "api/v1/accounts/numberAccount/{numberAccount}")
 	AccountDto getByNumberAccount(@PathVariable("numberAccount") String numberAccount);
 	
 	/**
 	 * GetMapping method to receive the request
-	 * @param numberAccount text string with the identifier user
+	 * @param userId text string with the identifier user
 	 * @return The response object with information details
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "account/getByUserId/{userId}")
-	ResponseDto getAccounts(@PathVariable int userId);
+	@RequestMapping(method = RequestMethod.GET, value = "api/v1/accounts/userId/{userId}")
+	List<AccountDto> getAccounts(@PathVariable int userId);
 	
 	/**
 	 * PutMapping method to receive the request
-	 * @param numberAccount text string with the identifier account
+	 * @param account object that contains the account information
+	 * @param numberAccount text string with the number account
 	 * @return The response object with information details
 	 */
-	@RequestMapping(method = RequestMethod.PUT, value = "account/edit/{numberAccount}")
+	@RequestMapping(method = RequestMethod.PUT, value = "api/v1/accounts/{numberAccount}")
 	ResponseDto update(@RequestBody AccountDto account,@PathVariable String numberAccount);
 }

@@ -1,45 +1,113 @@
-Coding challenge.
+# <p style='color:blue'>**Challenge Solution**</p>
 
-On this file will explain the way to build/run/use the microservice application.
+The solution consists of an API capable of transferring funds between two accounts, taking into account certain business rules.
 
-There's two ways to build/run/use the app:
-	1. Using the dockerfile: For this, we need have docker installed. First, we need change the application properties from
-							gateway, auth, user, account and transacion service. Open the file application.properties and change this property: eureka.client.service-url.defaultZone and put this new value eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
+## <p style='color:blue'>**Implementación**</p>
 
-							Then, we need to generate the .jar files for every microservice, for this we open the CMD in each microservice root folder and execute the following command: mvnw clean package.
+The API is developed with a microservices architecture with the following technologies.
 
-							When every .jar file have been generated, then we locate the CMD in the docker-compose folder, and execute the following command: docker-compose build. This will create each image of the microservices.	
+- **Spring-eureka-client** - Esta biblioteca permite crear un cliente para conectarse con el servicio de descubrimiento.
+- **Spring-eureka-server** - Esta biblioteca le permite crear un servidor de descubrimiento.
+- **Spring Cloud Gateway** - facilita la creación de un corredor al proporcionar una forma simple pero efectiva de enrutar a las API
+- **H2** - Implementado como base de datos embebida en los proyectos donde corresponde.
+- **JPA** - Responsable de la persistencia de datos.
+- **Spring security** - Facilitar la autenticación de usuarios y la configuración de seguridad de autorizaciones.
+- **JWT** - El token web JSON crea tokens que se validan para conocer la identidad y los privilegios de los usuarios.
+- **Swagger** - Automatización de la documentación de la API.
+- **Docker** - Facilita automatizar el despliegue del API dentro de contenedores y a su vez dentro de una red en este caso.
 
-							When this is done, then we execute docker-compose up. This will create and run each image within a docker container. 						
+- **Spring-eureka-client** - This library allows you to create a client to connect to the discovery service.
+- **Spring-eureka-server** - This library allows you to create a discovery server.
+- **Spring Cloud Gateway** - It makes it easy to create a gateway that provides a simple yet effective way to route to microservices.
+- **H2** - Implemented as an embedded database in the projects where it corresponds.
+- **JPA** - Responsible for data persistence.
+- **Spring security** - Facilitate user authentication and authorization security settings.
+- **JWT** - JSON Web Token creates tokens that are validated for user identity and privileges.
+- **Swagger** - API documentation automation.
+- **Docker** - It makes it easier to automate the deployment of the API within containers and in turn within a network in this case.
 
-	2. Doing it manually: This is how is configured by default in the repository. We should compile every microservice and execute it in the following order: eureka - gateway - auth - user - account - transaction.
+In this case there are 6 microservices which are detailed below.
 
-In the browser, also we can search by http://localhost:8761, and this will show us the discovery service created.
+- **eureka-service** - Discovery server responsible for registering and locating the different microservices.
+- **gateway-service** - Provides an entry point for interacting with microservices.
+- **auth-service** - Responsible for providing security to consumption.
+- **user-service** - Abstraction of a user that has accounts and can perform transactions.
+- **account-service** - Responsible for managing the functionalities of the accounts.
+- **transaction-service** - Responsible for managing the functionalities of the transactions.
 
-Technologies used: 
-	- Spring-eureka-client: This library allows create a client to connect with the discovery service.
-	- Spring-eureka-server: This library allows create a discovery server.
-	- Spring Cloud Gateway: Makes it easy to build a broker by providing a simple yet effective way to route to APIs
-        - H2: Implemented as an embedded database in the projects where it corresponds.
-        - JPA: Responsible for data persistence.
-        - Spring security: Facilitating user authentication and authorization security configuration.
-        - JWT: JSON web token creates tokens that are validated to know the identity and privileges of users.
-	- Springdoc: Automating API documentation.
-        - Docker: Facilitates by automating the deployment of APIs within containers and in turn within a network in this case.
+In each microservice you can find different packages, which have the *com.test* convention. Listed below are those that can be found.
 
-NOTE 1: A .postman_collection.json file is delivered with the configuration for use of the different services.
+- **(microservicename)service** : The name corresponds to the microservice to which it belongs followed by the word *service*. Example: *eurekaservice*, *gatewayservice*, etc. This package is the main package and is where the startup class can be found.
+- **config** : Contains the corresponding configuration classes for each microservice.
+- **constant** : Contains the classes with the constant values for each microservice.
+- **controller** : Contains the controller classes, where the requests arrive and from where they are delegated.
+- **dto** : Contains the classes used to secure the transfer of information.
+- **entity** : Contains the entity classes that represent a table in a database and that are made up of persistence fields corresponding to the columns of the corresponding table.
+- **exception** : Contains the class that handles the exceptions that occur during execution time and have to do with business rules and classes with the different types of error according to the business rules.
+- **repository** : Contains the repository classes in charge of managing the persistence operations with a database table.
+- **service** : Contains the classes that provide security to the API.
+- **service** : Contains the interfaces that specify the services with which the user can interact through the controller.
+- **service.impl** : Contains the classes that implement the services with which the user can interact through the controller.
+- **util** : Contains the classes that provided usefulness or facilities..
 
-	Run order services: 
-		- AUTH -> create : Register the user
-		- AUTH -> login : Gets the token according to the user information
-		- Update the token for each service.
-		- Use the services that are in USER.
 
-NOTE 2: The auth, user, account and transaction projects have files that are executed on startup and that create a schema and/or record initial information.
+## <p style='color:blue'>**Business Modeling**</p>
 
-	If you want to cut the path run: 
-		- AUTH -> create : Register the user
-		- AUTH -> login : Gets the token according to the user information
-		- Update the token for each service.
-		- USER -> SAVETRANSACTION.
-		- See updated information with GET services.
+Below you can see sequence diagrams of the three most important transactions developed (Authentication, Save Account, Sava Transaction). In these cases, it is due to the fact that each request complies with the business rules.
+
+### Authentication
+
+![Image Text](https://raw.githubusercontent.com/JJGA123/IMAGES/main/AUTHENTICATION.png)
+
+### Create Account
+
+![Image Text](https://github.com/JJGA123/IMAGES/blob/main/CREATEACCOUNT.png)
+
+### Send Transaction
+
+![Image Text](https://github.com/JJGA123/IMAGES/blob/main/SENDTRANSACTION.png)
+
+## <p style='color:blue'>**Build/Run/Use**</p>
+
+This part will explain how to compile/run/use the API.
+
+There are two ways to build/run/use the app:
+
+- ####Using the docker file: 
+
+For this, you need to have docker installed. Change the properties of the application
+gateway, auth, user, account and transaction. Open the application.properties file and change the value of the property: *eureka.client.service-url.defaultZone* and put this new value *http://eureka-service:8761/eureka*.
+
+Generate the .jar files for each microservice by opening CMD in the root folder of each microservice and executing the *mvnw clean package* command.
+
+When each .jar file has been generated, you need to locate the CMD in the docker-compose folder and run the *docker-compose build* command. This will create each microservices image.
+
+Finally run *docker-compose up*. This will build and run each image inside a docker container.
+
+- ####Manually:
+
+Each microservice must be compiled and run in the following order: eureka - gateway - auth - user - account - transaction.
+
+In the browser we can also search for *http://localhost:8761*, this will show the discovery service created with the clients that have registered.
+
+NOTE 1: For the use of the different services, a .postman_collection.json file is delivered.
+
+Run as follows:
+>1. AUTH -> create: Register the user.
+>2. AUTH -> login: get the token according to the user information.
+>3. Update the token for each service.
+>4. Use the services found in USER.
+
+
+NOTE 2: The auth, user, account and transaction projects have files that are executed at startup and that create a schema and/or record initial information.
+
+If you want to cut the path, execute as follows:
+>- AUTH -> create: Register the user
+>- AUTH -> login: get the token according to the user information
+>- Update the token for each service.
+>- USER -> saveTransaction: Execute the transaction.
+>- USER -> View updated information with GET services.
+
+## <p style='color:blue'>**Test**</p>
+
+The unit tests are located in the *\src\test\java\com\test\microservice* folder corresponding to the project, in this case the tests were executed for the service component.

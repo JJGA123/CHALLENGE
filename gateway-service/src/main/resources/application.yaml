@@ -9,22 +9,22 @@ spring:
         uri:
           lb://user-service
         predicates:
-          - Path=/user/**
+          - Path=/api/v1/users/**
         filters:
           - AuthFilter
       - id: account-service
         uri:
           lb://account-service
         predicates:
-        - Path=/account/**
+        - Path=/api/v1/accounts/**
       - id: transaction-service
         uri:
           lb://transaction-service
         predicates:
-        - Path=/transaction/**
+        - Path=/api/v1/transactions/**
       - id: auth-service
         uri:
           lb://auth-service
         predicates:
-        - Path=/auth/**
+        - Path=/api/v1/auths/**
                 

@@ -1,31 +1,35 @@
 package com.test.authservice.service.impl;
 
-import com.test.authservice.dto.AuthUserDto;
+import com.test.authservice.dto.UserDto;
 import com.test.authservice.dto.NewUserDto;
 import com.test.authservice.dto.RequestDto;
 import com.test.authservice.dto.TokenDto;
-import com.test.authservice.entity.AuthUser;
+import com.test.authservice.entity.UserEntity;
+import com.test.authservice.exception.UnauthorizedException;
 import com.test.authservice.repository.AuthUserRepository;
 import com.test.authservice.security.JwtProvider;
 import com.test.authservice.service.IAuthUserService;
+import com.test.authservice.util.Mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class AuthUserService implements IAuthUserService{
 
+    private final AuthUserRepository authUserRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
+    private final Mapper mapper;
+    
     @Autowired
-    AuthUserRepository authUserRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    JwtProvider jwtProvider;
+	public AuthUserService(AuthUserRepository authUserRepository,PasswordEncoder passwordEncoder,JwtProvider jwtProvider,Mapper mapper) {
+		this.authUserRepository = authUserRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.jwtProvider = jwtProvider;
+		this.mapper = mapper;
+	}
 
     /**
 	 * Implementation save: save the new user
@@ -33,17 +37,19 @@ public class AuthUserService implements IAuthUserService{
 	 * @return New user information
 	 */
     @Override
-    public AuthUser save(NewUserDto dto) {
-        Optional<AuthUser> user = authUserRepository.findByNameUser(dto.getNameUser());
-        if(user.isPresent())
-            return null;
+    public NewUserDto save(NewUserDto dto) {
+        UserEntity user = authUserRepository.findByNameUser(dto.getNameUser());
+        NewUserDto newUserDto = null;
+        if(user!=null)
+        	throw new UnauthorizedException("");
         String password = passwordEncoder.encode(dto.getPassword());
-        AuthUser authUser = AuthUser.builder()
-                .nameUser(dto.getNameUser())
-                .password(password)
-                .role(dto.getRole())
-                .build();
-        return authUserRepository.save(authUser);
+        dto.setPassword(password);
+        user = authUserRepository.save(mapper.toEntity(dto));
+        newUserDto = mapper.toDto(user);
+        if(newUserDto==null) {
+        	throw new UnauthorizedException("");
+        }
+        return newUserDto;
     }
 
     /**
@@ -52,13 +58,19 @@ public class AuthUserService implements IAuthUserService{
 	 * @return Information token
 	 */
     @Override
-    public TokenDto login(AuthUserDto dto) {
-        Optional<AuthUser> user = authUserRepository.findByNameUser(dto.getNameUser());
-        if(!user.isPresent())
-            return null;
-        if(passwordEncoder.matches(dto.getPassword(), user.get().getPassword()))
-            return new TokenDto(jwtProvider.createToken(user.get()));
-        return null;
+    public TokenDto login(UserDto dto) {
+        UserEntity user = authUserRepository.findByNameUser(dto.getNameUser());
+        TokenDto tokenDto = null;
+        if(user==null) {
+        	throw new UnauthorizedException("");
+    	}
+        if(passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+        	tokenDto = new TokenDto(jwtProvider.createToken(user));
+    	}
+        if(tokenDto == null) {
+        	throw new UnauthorizedException("");
+        }
+        return tokenDto;
     }
 
     /**
@@ -69,11 +81,17 @@ public class AuthUserService implements IAuthUserService{
 	 */
     @Override
     public TokenDto validate(String token, RequestDto dto) {
-        if(!jwtProvider.validate(token,dto))
-            return null;
-        String username = jwtProvider.getUserNameFromToken(token);
-        if(!authUserRepository.findByNameUser(username).isPresent())
-            return null;
-        return new TokenDto(token);
+    	TokenDto tokenDto = null;
+        if(!jwtProvider.validate(token,dto)) {
+        	return null;
+        } else {
+        	String username = jwtProvider.getUserNameFromToken(token);
+            if(authUserRepository.findByNameUser(username)==null) {
+            	return null;
+            } else {
+            	tokenDto = new TokenDto(token);
+            }
+        }
+        return tokenDto;
     }
 }
