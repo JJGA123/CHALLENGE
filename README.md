@@ -6,16 +6,6 @@ The solution consists of an API capable of transferring funds between two accoun
 
 The API is developed with a microservices architecture with the following technologies.
 
-- **Spring-eureka-client** - Esta biblioteca permite crear un cliente para conectarse con el servicio de descubrimiento.
-- **Spring-eureka-server** - Esta biblioteca le permite crear un servidor de descubrimiento.
-- **Spring Cloud Gateway** - facilita la creación de un corredor al proporcionar una forma simple pero efectiva de enrutar a las API
-- **H2** - Implementado como base de datos embebida en los proyectos donde corresponde.
-- **JPA** - Responsable de la persistencia de datos.
-- **Spring security** - Facilitar la autenticación de usuarios y la configuración de seguridad de autorizaciones.
-- **JWT** - El token web JSON crea tokens que se validan para conocer la identidad y los privilegios de los usuarios.
-- **Swagger** - Automatización de la documentación de la API.
-- **Docker** - Facilita automatizar el despliegue del API dentro de contenedores y a su vez dentro de una red en este caso.
-
 - **Spring-eureka-client** - This library allows you to create a client to connect to the discovery service.
 - **Spring-eureka-server** - This library allows you to create a discovery server.
 - **Spring Cloud Gateway** - It makes it easy to create a gateway that provides a simple yet effective way to route to microservices.
